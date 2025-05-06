@@ -1,0 +1,311 @@
+/* style.css */
+
+/* --- Global Styles & Variables --- */
+:root {
+    --primary-color: #2c3e50; /* Dark blue-gray */
+    --secondary-color: #3498db; /* Bright blue */
+    --accent-color: #e74c3c; /* Red for crash/alerts */
+    --text-color: #ecf0f1; /* Light gray/white */
+    --background-color: #1a2533; /* Dark sky blue/night */
+    --container-bg: rgba(44, 62, 80, 0.85); /* Semi-transparent dark blue */
+    --font-main: 'Arial', sans-serif; /* Placeholder font */
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--background-color);
+    background-image: url('path/to/your/sky-background.jpg'); /* Add your sky background image */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden; /* Prevent horizontal scroll on small screens */
+}
+
+/* --- Game Container --- */
+#game-container {
+    background-color: var(--container-bg);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    width: 90%;
+    max-width: 1000px; /* Adjust as needed */
+    display: grid;
+    grid-template-areas:
+        "animation animation"
+        "controls info"
+        "history user-history";
+    grid-template-columns: 1fr 1fr; /* Two equal columns for controls/info and histories */
+    grid-gap: 20px;
+    backdrop-filter: blur(5px); /* Optional: for a frosted glass effect over background */
+}
+
+/* --- Animation Area --- */
+#animation-area {
+    grid-area: animation;
+    position: relative; /* For absolute positioning of multiplier */
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    min-height: 250px; /* Ensure space for animation */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--secondary-color);
+}
+
+#gameCanvas {
+    /* Canvas will be sized by JS, but can set max-width/height here if needed */
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+#multiplier-display {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem; /* Large display */
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    z-index: 10; /* Ensure it's above the canvas if canvas has complex graphics */
+}
+
+/* --- Controls Area --- */
+#controls-area {
+    grid-area: controls;
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#controls-area input[type="number"],
+#controls-area button {
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid var(--secondary-color);
+    font-size: 1rem;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+}
+
+#controls-area input[type="number"] {
+    width: calc(100% - 26px); /* Account for padding and border */
+}
+#controls-area input[type="number"]:focus {
+    outline: none;
+    border-color: lighten(var(--secondary-color), 10%);
+    box-shadow: 0 0 5px lighten(var(--secondary-color), 10%);
+}
+
+#controls-area button {
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+#controls-area button:hover:not(:disabled) {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+#controls-area button:active:not(:disabled) {
+    transform: translateY(0px);
+}
+
+#controls-area button:disabled {
+    background-color: #555;
+    color: #999;
+    cursor: not-allowed;
+}
+
+#cashOutButton {
+    background-color: #27ae60; /* Green for cash out */
+}
+#cashOutButton:hover:not(:disabled) {
+    background-color: #2ecc71;
+}
+
+.auto-cashout {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.auto-cashout label {
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+
+/* --- Info Area --- */
+#info-area {
+    grid-area: info;
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#balance {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--secondary-color);
+    text-align: center;
+    padding: 10px;
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+#round-status {
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 8px;
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+
+#simulated-players {
+    margin-top: 10px;
+}
+#simulated-players h4 {
+    margin-bottom: 8px;
+    color: var(--secondary-color);
+    text-align: center;
+}
+#live-bets-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 150px; /* Limit height and make scrollable */
+    overflow-y: auto;
+    font-size: 0.9rem;
+}
+#live-bets-list li {
+    padding: 4px 8px;
+    border-bottom: 1px solid rgba(var(--text-color-rgb), 0.1); /* Assuming text-color-rgb is defined if using rgba with it */
+    border-bottom: 1px solid rgba(236, 240, 241, 0.1); /* Fallback */
+}
+#live-bets-list li:last-child {
+    border-bottom: none;
+}
+
+/* --- History Areas --- */
+#history-area, #user-history-area {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+#history-area { grid-area: history; }
+#user-history-area { grid-area: user-history; }
+
+#history-area h4, #user-history-area h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: var(--secondary-color);
+    text-align: center;
+}
+
+#round-history-list, #user-bet-history-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 150px; /* Limit height and make scrollable */
+    overflow-y: auto;
+    font-size: 0.9em;
+}
+
+#round-history-list li, #user-bet-history-list li {
+    padding: 5px 8px;
+    border-bottom: 1px solid rgba(236, 240, 241, 0.1);
+    text-align: center;
+}
+#round-history-list li:last-child, #user-bet-history-list li:last-child {
+    border-bottom: none;
+}
+
+/* Example color coding for round history multipliers */
+#round-history-list li.low { color: #e74c3c; } /* Red for low */
+#round-history-list li.medium { color: #f39c12; } /* Orange for medium */
+#round-history-list li.high { color: #2ecc71; } /* Green for high */
+
+
+/* --- Scrollbar Styling (Optional, Webkit browsers) --- */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.1);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--secondary-color);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: lighten(var(--secondary-color), 10%);
+}
+
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+    #game-container {
+        grid-template-areas: /* Stack them on smaller screens */
+            "animation"
+            "controls"
+            "info"
+            "history"
+            "user-history";
+        grid-template-columns: 1fr; /* Single column */
+        width: 95%;
+        padding: 15px;
+    }
+
+    #multiplier-display {
+        font-size: 3rem;
+    }
+
+    #balance {
+        font-size: 1.3rem;
+    }
+
+    #round-status {
+        font-size: 1rem;
+    }
+
+    #controls-area input[type="number"],
+    #controls-area button {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    #live-bets-list, #round-history-list, #user-bet-history-list {
+        max-height: 120px; /* Adjust height for smaller screens */
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #multiplier-display {
+        font-size: 2.5rem;
+    }
+    body {
+        padding-top:10px; /* Add some padding if container touches edges */
+        padding-bottom:10px;
+    }
+    #game-container {
+        padding:10px;
+    }
+     #controls-area {
+        gap: 10px;
+    }
+}
